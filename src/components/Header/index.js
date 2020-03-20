@@ -25,12 +25,12 @@ const header = props => (
 				        <Logo />
 					</Link>
 					<ul>
-					<li>
-					<Link to ="/groups">Groups</Link>
-					</li>
-					<li>
-					<Link to ="/users">Users</Link>
-					</li>
+					  <li>
+					    <Link to ="/groups">Groups</Link>
+					  </li>
+					  <li>
+					    <Link to ="/users">Users</Link>
+					  </li>
 					// SignOut button
 					</ul>
                 </Header>
