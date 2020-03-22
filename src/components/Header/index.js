@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../Logo';
 import styled from 'styled-components';
+import SignOut from '../SignOut';
 // SignOut button
 
 const Header = styled.header`
@@ -31,7 +32,7 @@ const header = props => (
 					  <li>
 					    <Link to ="/users">Users</Link>
 					  </li>
-					// SignOut button
+					  {props.user ? <SignOut /> : null}
 					</ul>
                 </Header>
 )

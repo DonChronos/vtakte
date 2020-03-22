@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { doSignUp } from '../Firebase';
+import { withRouter } from 'react-router-dom';
+import { doSignUp, userRef } from '../Firebase';
 
 const INITIAL_STATE = {
 		username: '',
+		role: 'drummer',
 		email: '',
 		passwordOne: '',
 		passwordTwo: '',
@@ -11,15 +13,29 @@ const INITIAL_STATE = {
 const SignUp = props => {
 	const [user, setUser] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(null);
-	let {username, email, passwordOne, passwordTwo} = user;
+	let { username, role, email, passwordOne, passwordTwo } = user;
 	console.log(user);
 	console.log(error);
 	const onSubmit = event => {
 		doSignUp(email, passwordOne)
+		.then(authUser => {
+			authUser.user.updateProfile({
+				displayName: username
+			});
+			return userRef(authUser.user.uid).set({
+				username,
+				role,
+				
+			});
+		})
+		.then(() => {
+			setUser({...INITIAL_STATE});
+			props.history.push('/');
+		})
 		.catch(error => {
 			setError(error);
 			console.log(error.message);
-		})
+		});
 		// on success should create user in database and the have history pushed to home
 		event.preventDefault();
 	}
@@ -31,7 +47,7 @@ const SignUp = props => {
 	passwordOne === '' ||
 	email === '' ||
 	username === '';
-	
+	// add proper validation with regex
 	return (
 	<form onSubmit={onSubmit}>
 	<input
@@ -41,6 +57,56 @@ const SignUp = props => {
 	type='text'
 	placeholer='Username'
 	/>
+	<label>
+	<input
+	name='role'
+	value='drummer'
+	onChange={onChange}
+	type='radio'
+	checked={role === 'drummer'}
+	/>
+	Drummer
+	</label>
+	<label>
+	<input
+	name='role'
+	value='singer'
+	onChange={onChange}
+	type='radio'
+	checked={role === 'singer'}
+	/>
+	Singer
+	</label>
+	<label>
+	<input
+	name='role'
+	value='guitar'
+	onChange={onChange}
+	type='radio'
+	checked={role === 'guitar'}
+	/>
+	Guitar
+	</label>
+	<label>
+	<input
+	name='role'
+	value='bass'
+	onChange={onChange}
+	type='radio'
+	checked={role === 'bass'}
+	/>
+	Bass guitar
+	</label>
+	<label>
+	<input
+	name='role'
+	value='piano'
+	onChange={onChange}
+	type='radio'
+	checked={role === 'piano'}
+	/>
+	Piano
+	</label>
 	<input
 	name='email'
 	value={email}
@@ -63,9 +129,9 @@ const SignUp = props => {
 	placeholer='Confirm Password'
 	/>
 	<button disabled={isInvalid} type='submit'>Sign Up</button>
-	{error && <p>{error.message}</p>}
+	{error && <p>{error.message} Try again later.</p>}
 	</form>
 	);
 }
 
-export default SignUp;
+export default withRouter(SignUp);

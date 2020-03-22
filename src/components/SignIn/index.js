@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { doSignIn } from '../Firebase';
 
 const INITIAL_STATE = {
@@ -10,15 +11,17 @@ const INITIAL_STATE = {
 const SignIn = props => {
 	const [user, setUser] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(null);
-	let {email, password} = user;
-	console.log(user);
-	console.log(error);
+	let { email, password } = user;
 	const onSubmit = event => {
 		doSignIn(email, password)
+		.then(() => {
+			setUser({...INITIAL_STATE});
+			props.history.push('/');
+		})
 		.catch(error => {
 			setError(error);
 			console.log(error.message);
-		})
+		});
 		// on success should have history pushed to home via withRouter
 		event.preventDefault();
 	}
@@ -26,8 +29,8 @@ const SignIn = props => {
 		let target = event.target;
 		setUser(state => ({...state, [target.name]: target.value}));
 	}
-	const isInvalid = password === '' ||email === '';
-
+	const isInvalid = password === '' || email === '';
+//  add proper validation with regex
 	
 	return (
 	<form onSubmit={onSubmit}>
@@ -46,9 +49,9 @@ const SignIn = props => {
 	placeholer='Password'
 	/>
 	<button disabled={isInvalid} type='submit'>Sign In</button>
-	{error && <p>{error.message}</p>}
+	{error && <p>{error.message} Try again later.</p>}
 	</form>
 	);
 }
 
-export default SignIn;
+export default withRouter(SignIn);
