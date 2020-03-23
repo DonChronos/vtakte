@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { doSignIn } from '../Firebase';
 
 const INITIAL_STATE = {
@@ -8,15 +8,16 @@ const INITIAL_STATE = {
 	}
 
 
-const SignIn = props => {
+const SignIn = () => {
 	const [user, setUser] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(null);
 	let { email, password } = user;
+	let history = useHistory();
 	const onSubmit = event => {
 		doSignIn(email, password)
 		.then(() => {
 			setUser({...INITIAL_STATE});
-			props.history.push('/');
+			history.push('/');
 		})
 		.catch(error => {
 			setError(error);
@@ -54,4 +55,4 @@ const SignIn = props => {
 	);
 }
 
-export default withRouter(SignIn);
+export default SignIn;

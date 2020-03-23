@@ -27,12 +27,12 @@ const header = props => (
 					</Link>
 					<ul>
 					  <li>
-					    <Link to ="/groups">Groups</Link>
+					    <Link to ="/bands">Bands</Link>
 					  </li>
 					  <li>
 					    <Link to ="/users">Users</Link>
 					  </li>
-					  {props.user ? <SignOut /> : null}
+					  {props.name ? <SignOut /> : null}
 					</ul>
                 </Header>
 )

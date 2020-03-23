@@ -19,6 +19,7 @@ export const doSignIn = (email, password) => auth.signInWithEmailAndPassword(ema
 export const doSignOut = () => auth.signOut();
 export const userRef = uid => db.ref(`users/${uid}`);
 export const usersRef = () => db.ref('users');
-export const groupRef = gid => db.ref(`groups/${gid}`);
-export const groupsRef = () => db.ref('groups');
+export const bandRef = gid => db.ref(`bands/${gid}`);
+export const bandsRef = () => db.ref('bands');
+console.log('firebase');
 // Implement messages later

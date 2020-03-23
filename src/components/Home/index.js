@@ -5,7 +5,12 @@ import { Link } from 'react-router-dom';
 
 // add indication that user is logged in
 const Home = props => {
-    return props.user ? <h1>Welcome, {props.user}</h1> : 
+    return props.name ? 
+	<div>
+	  <h1>Welcome, {props.name}</h1>
+	  <Link to='/create_band'>Create band</Link>
+    </div>	
+	: 
 	<div>
   <h1>Vtakte - a social networking service for musicians</h1>
   <Link to='/signup'>Sign Up</Link>
