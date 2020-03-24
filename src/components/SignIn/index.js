@@ -23,7 +23,6 @@ const SignIn = () => {
 			setError(error);
 			console.log(error.message);
 		});
-		// on success should have history pushed to home via withRouter
 		event.preventDefault();
 	}
 	const onChange = event => {
@@ -31,7 +30,6 @@ const SignIn = () => {
 		setUser(state => ({...state, [target.name]: target.value}));
 	}
 	const isInvalid = password === '' || email === '';
-//  add proper validation with regex
 	
 	return (
 	<form onSubmit={onSubmit}>
@@ -39,7 +37,7 @@ const SignIn = () => {
 	name='email'
 	value={email}
 	onChange={onChange}
-	type='text'
+	type='email'
 	placeholer='Email Address'
 	/>
 	<input

@@ -15,9 +15,24 @@ let localObject = JSON.parse(localStorage.getItem(Object.keys(window.localStorag
 // get firebase localstorage object
 let user = localObject ? [localObject.displayName, localObject.uid] : [null, null];
 
-// protected route implementation here 
-// signin and signup should be protected if user is already signed in
-/// change state from [] to {}
+const ProtectedRoute = ({ check, children, ...rest}) => {
+	return (
+	<Route 
+	  {...rest}
+	  render={({ location }) => 
+	    check ? (
+		children
+		) : (
+		  <Redirect
+		    to='/'
+			/>
+		)
+	  }
+	/>
+	);
+};
+
+/// change state from [] to {} <--forgot why I wrote that
 const App = () => {
 	let [state, setState] = useState(user);
 	useEffect(() => {
@@ -45,27 +60,27 @@ const App = () => {
 		    <Route exact path='/'>
 			  <Home name={name} />
 			</Route>
-			<Route exact path='/create_band'>
+			<ProtectedRoute exact check={name} path='/create_band'>
 			  <Create_Band uid={uid} />
-			</Route>
-			<Route exact path='/users'>
+			</ProtectedRoute>
+			<ProtectedRoute exact check={name} path='/users'>
 			  <List type='users' observer={usersRef} />
-			</Route>
-			<Route exact path='/bands'>
+			</ProtectedRoute>
+			<ProtectedRoute exact check={name} path='/bands'>
 			  <List type='bands' observer={bandsRef} />
-			</Route>
-			<Route exact path='/users/:uid'>
+			</ProtectedRoute>
+			<ProtectedRoute exact check={name} path='/users/:uid'>
 			  <Profile uid={uid} observer={userRef} />
-			</Route>
-			<Route exact path='/bands/:uid'>
+			</ProtectedRoute>
+			<ProtectedRoute exact check={name} path='/bands/:uid'>
 			  <Profile uid={uid} observer={bandRef} />
-			</Route>
-			<Route exact path='/signup'>
+			</ProtectedRoute>
+			<ProtectedRoute exact check={!name} path='/signup'>
 			  <SignUp />
-			</Route>
-			<Route exact path='/signin'>
+			</ProtectedRoute>
+			<ProtectedRoute exact check={!name} path='/signin'>
 			  <SignIn />
-			</Route>
+			</ProtectedRoute>
 		  </Switch>
 		</Suspense>
 	</main>

@@ -58,6 +58,7 @@ const SignUp = () => {
 	onChange={onChange}
 	type='text'
 	placeholer='Username'
+	maxLength={16}
 	/>
 	<label>
 	<input
@@ -113,7 +114,8 @@ const SignUp = () => {
 	name='email'
 	value={email}
 	onChange={onChange}
-	type='text'
+	type='email'
+	required
 	placeholer='Email Address'
 	/>
 	<input

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 // import styled from 'styled-components';
 // Style the wrapping component, wrap Links in ul li's, style them too.
 
-// add indication that user is logged in
 const Home = props => {
     return props.name ? 
 	<div>
@@ -13,6 +12,7 @@ const Home = props => {
 	: 
 	<div>
   <h1>Vtakte - a social networking service for musicians</h1>
+  <p>You need to be signed in to explore the website</p>
   <Link to='/signup'>Sign Up</Link>
   <Link to='/signin'>Sign In</Link>
 </div>;

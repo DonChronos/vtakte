@@ -11,11 +11,9 @@ const Create_Band = (props) => {
 	const onSubmit = event => {
 		let bandKey = userRef(props.uid).child('band').push().key;
 		console.log(bandKey);
-		let update1 = {};
-		update1[bandKey] = true;
 		let update2 = {};
 		update2[props.uid] = true;
-		userRef(props.uid).child('band').update(update1)
+		userRef(props.uid).child('band').update(bandKey)
 		.then(() => {
 			bandRef(bandKey).set({
 				name,
@@ -30,14 +28,12 @@ const Create_Band = (props) => {
 			setError(error);
 			console.log(error.message);
 		});
-		// on success should create user in database and the have history pushed to home
 		event.preventDefault();
 	}
 	const onChange = event => {
 		let target = event.target;
 		setName(target.value);
 	}
-//  add proper validation with regex
 	
 	return (
 	<form onSubmit={onSubmit}>

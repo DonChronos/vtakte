@@ -5,14 +5,12 @@ const INITIAL_STATE = {
 	loading: true,
 	list: [],
 }
-// todo - make list component more abstract to fit users, groups, messages etc.
-// indicate loading
+
 console.log('users component loaded');
 const List = (props) => {
 	const [state, setState] = useState({...INITIAL_STATE});
     const observer = props.observer;
-	useEffect(() => {
-		
+	useEffect(() => {		
 		observer().on('value', snapshot => {
 		const usersObject = snapshot.val();
 		const usersList = Object.keys(usersObject).map(key => ({

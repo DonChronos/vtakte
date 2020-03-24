@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Logo from '../Logo';
 import styled from 'styled-components';
 import SignOut from '../SignOut';
-// SignOut button
 
 const Header = styled.header`
 position: sticky;

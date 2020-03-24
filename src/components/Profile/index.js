@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-// add Links to band/band members
+import { useParams, Link } from 'react-router-dom';
+// add JoinBand and startChat buttons
 
 const INITIAL_STATE = {
 	loading: true,
-	profile: [],
+	profile: {},
 }
 // const testSubject = userRef; <-- abstraction can be successful
 const Profile = (props) => {
@@ -14,30 +14,27 @@ const Profile = (props) => {
 	useEffect(() => {
 		observer(uid).once('value', snapshot => {
 		const userObject = snapshot.val();
-		const userList = Object.entries(userObject);
 		setState({
 			loading: false,
-			profile: userList,
+			profile: userObject,
 		})
 	});
-	return () => setState({
-		loading: true,
-		profile: [],
-	})
+	return () => {
+		setState({...INITIAL_STATE})
+	}
 	}, [uid]);
     let { loading, profile } = state;
 	console.log(profile);
+	if (loading) return <h3>Loading...</h3>
 	return (
 	<div>
-	{loading && <h3>Loading...</h3>}
-	<ul>
 	{props.uid === uid ? <p>This is you</p> : null}
-	{profile.map(e => (
-		<li key={e[0]}>
-		<p>{e[0]+e[1]}</p>
-		</li>
-	))}
-	</ul>
+	{profile.role ? <><p>{profile.username}</p><p>{profile.role}</p>{profile.band ? <Link to={'/bands/'+profile.band}>Band</Link> : null}</> :
+	<><p>{profile.name}</p><ul>{Object.keys(profile.members).map(e => (
+	<li key={e}>
+	<Link to={'/users/'+e}>Member</Link>{props.uid === e ? ' This is you' : null}
+	</li>
+	))}</ul></>}
 	</div>
 	);
 }
