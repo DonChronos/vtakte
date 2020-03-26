@@ -2,22 +2,25 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { userRef, bandRef } from '../Firebase';
 
+
+// fix partOf bug
 const Create_Band = (props) => {
 	const [name, setName] = useState('');
 	const [error, setError] = useState(null);
 	let history = useHistory();
-	if (userRef(props.uid).once('value').then(snapshot => snapshot.child('band')
-	.exists())) return (<p>You're already a part of a band</p>)
+	let partOf = userRef(props.uid).once('value').then(snapshot => snapshot.child('band').exists());
+	console.log(partOf);
+	if (partOf) return <p>You're already a part of a band</p>;
 	const onSubmit = event => {
 		let bandKey = userRef(props.uid).child('band').push().key;
 		console.log(bandKey);
-		let update2 = {};
-		update2[props.uid] = true;
+		let update = {};
+		update[props.uid] = props.name;
 		userRef(props.uid).child('band').update(bandKey)
 		.then(() => {
 			bandRef(bandKey).set({
 				name,
-				members: update2
+				members: update
 			})
 		})
 		.then(() => {
@@ -42,7 +45,7 @@ const Create_Band = (props) => {
 	value={name}
 	onChange={onChange}
 	type='text'
-	placeholer='Email Address'
+	placeholer='Band Name'
 	/>
 
 	<button disabled={!name} type='submit'>Create Band</button>

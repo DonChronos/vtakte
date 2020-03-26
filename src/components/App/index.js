@@ -61,7 +61,7 @@ const App = () => {
 			  <Home name={name} />
 			</Route>
 			<ProtectedRoute exact check={name} path='/create_band'>
-			  <Create_Band uid={uid} />
+			  <Create_Band name={name} uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/users'>
 			  <List type='users' observer={usersRef} />
@@ -73,7 +73,7 @@ const App = () => {
 			  <Profile uid={uid} observer={userRef} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/bands/:uid'>
-			  <Profile uid={uid} observer={bandRef} />
+			  <Profile name={name} uid={uid} observer={bandRef} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={!name} path='/signup'>
 			  <SignUp />

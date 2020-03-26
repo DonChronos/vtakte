@@ -6,6 +6,7 @@ const INITIAL_STATE = {
 	list: [],
 }
 
+// split list component in two
 console.log('users component loaded');
 const List = (props) => {
 	const [state, setState] = useState({...INITIAL_STATE});
@@ -13,6 +14,7 @@ const List = (props) => {
 	useEffect(() => {		
 		observer().on('value', snapshot => {
 		const usersObject = snapshot.val();
+		//check for null
 		const usersList = Object.keys(usersObject).map(key => ({
 			...usersObject[key],
 			uid: key,
@@ -29,6 +31,7 @@ const List = (props) => {
 	}
 	}, [props.type]);
 	let { loading, list } = state;
+	console.log('list return');
 	return (
 	<div>
 	<h1>{props.type}</h1>
