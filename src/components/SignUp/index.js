@@ -9,16 +9,19 @@ const INITIAL_STATE = {
 		passwordOne: '',
 		passwordTwo: '',
 	}
-
+// on loading disable button to prevent multiple calls to database
 const SignUp = () => {
 	const [user, setUser] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(null);
+	const [loading, setLoading] = useState(false);
 	let { username, role, email, passwordOne, passwordTwo } = user;
 	let history = useHistory();
 	console.log(history);
 	console.log(user);
 	console.log(error);
 	const onSubmit = event => {
+		if (loading) return;
+		setLoading(true);
 		doSignUp(email, passwordOne)
 		.then(authUser => {
 			authUser.user.updateProfile({

@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { userRef, bandRef } from '../Firebase';
 
 
-// fix partOf bug
+// add loading state, disable button when loading
 const Create_Band = (props) => {
 	const [name, setName] = useState('');
 	const [error, setError] = useState(null);
+	const [partOf, setPartOf] = useState(true);
+	const [loading, setLoading] = useState(true);
 	let history = useHistory();
-	let partOf = userRef(props.uid).once('value').then(snapshot => snapshot.child('band').exists());
+	useEffect(() => {
+		userRef(props.uid).once('value').then(snapshot => {
+		setPartOf(snapshot.child('band').exists());
+		setLoading(false);
+	  });
+	}, []);
+	
 	console.log(partOf);
-	if (partOf) return <p>You're already a part of a band</p>;
+	console.log(loading);
+	if (loading) return <h3>Loading...</h3>;
 	const onSubmit = event => {
+		if (loading) return;
+		setLoading(true);
 		let bandKey = userRef(props.uid).child('band').push().key;
 		console.log(bandKey);
 		let update = {};
 		update[props.uid] = props.name;
-		userRef(props.uid).child('band').update(bandKey)
+		userRef(props.uid).update({band: bandKey})
 		.then(() => {
 			bandRef(bandKey).set({
 				name,
@@ -37,7 +48,7 @@ const Create_Band = (props) => {
 		let target = event.target;
 		setName(target.value);
 	}
-	
+	if (partOf) return <p>You're already a part of a band</p>;
 	return (
 	<form onSubmit={onSubmit}>
 	<input
@@ -48,7 +59,7 @@ const Create_Band = (props) => {
 	placeholer='Band Name'
 	/>
 
-	<button disabled={!name} type='submit'>Create Band</button>
+	<button disabled={!name || loading} type='submit'>Create Band</button>
 	{error && <p>{error.message} Try again later.</p>}
 	</form>
 	);

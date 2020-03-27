@@ -2,13 +2,15 @@ import React, { Suspense, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from '../Header';
-import { auth, usersRef, bandsRef, userRef, bandRef } from '../Firebase';
+import { auth } from '../Firebase';
 
 const Home = React.lazy(() => import('../Home'));
-const List = React.lazy(() => import('../List'));
 const SignUp = React.lazy(() => import('../SignUp'));
 const SignIn = React.lazy(() => import('../SignIn'));
-const Profile = React.lazy(() => import('../Profile'));
+const User = React.lazy(() => import('../User'));
+const Users = React.lazy(() => import('../Users'));
+const Band = React.lazy(() => import('../Band'));
+const Bands = React.lazy(() => import('../Bands'));
 const Create_Band = React.lazy(() => import('../Create_Band'));
 
 let localObject = JSON.parse(localStorage.getItem(Object.keys(window.localStorage).filter(item => item.startsWith('firebase:authUser'))[0]));
@@ -64,16 +66,16 @@ const App = () => {
 			  <Create_Band name={name} uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/users'>
-			  <List type='users' observer={usersRef} />
+			  <Users />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/bands'>
-			  <List type='bands' observer={bandsRef} />
+			  <Bands />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/users/:uid'>
-			  <Profile uid={uid} observer={userRef} />
+			  <User uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/bands/:uid'>
-			  <Profile name={name} uid={uid} observer={bandRef} />
+			  <Band name={name} uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={!name} path='/signup'>
 			  <SignUp />
