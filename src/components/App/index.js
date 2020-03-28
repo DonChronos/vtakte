@@ -15,7 +15,8 @@ const Create_Band = React.lazy(() => import('../Create_Band'));
 
 let localObject = JSON.parse(localStorage.getItem(Object.keys(window.localStorage).filter(item => item.startsWith('firebase:authUser'))[0]));
 // get firebase localstorage object
-let user = localObject ? [localObject.displayName, localObject.uid] : [null, null];
+let user = localObject ? [localObject.displayName, localObject.uid, localObject.photoURL] : 
+[null, null, null];
 
 const ProtectedRoute = ({ check, children, ...rest}) => {
 	return (
@@ -35,6 +36,7 @@ const ProtectedRoute = ({ check, children, ...rest}) => {
 };
 
 /// change state from [] to {} <--forgot why I wrote that
+// minimise database
 const App = () => {
 	let [state, setState] = useState(user);
 	useEffect(() => {
@@ -42,17 +44,17 @@ const App = () => {
 		console.log('auth state changed');
 		if (authUser) {
 			console.log('user auth');
-			setState([authUser.displayName, authUser.uid]);
+			setState([authUser.displayName, authUser.uid, authUser.photoURL]);
 		} else {
 		   console.log('user unauth');
-		   setState([null, null]);
+		   setState([null, null, null]);
 		}
 		console.log('useEffect');
 	});
 	return () => unsubscribe();
 	}, []);
 	console.log('app');
-	let [name, uid] = state;
+	let [name, uid, photo] = state;
   return (
   <BrowserRouter>
     <Header name={name} />

@@ -25,12 +25,12 @@ const SignUp = () => {
 		doSignUp(email, passwordOne)
 		.then(authUser => {
 			authUser.user.updateProfile({
-				displayName: username
+				displayName: username,
+				photoURL: role,
 			});
 			return userRef(authUser.user.uid).set({
-				username,
-				role,
-				
+				u: username,
+				r: role,
 			});
 		})
 		.then(() => {

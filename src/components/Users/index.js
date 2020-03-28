@@ -35,9 +35,9 @@ const Users = () => {
 	{Object.entries(list).map(e => {
 	return (
 	<li key={e[0]}>
-	<p>{e[1].role}</p>
-	<p>{e[1].username}</p>
-	{e[1].band ? <p>Part of a band</p> : null}
+	<p>Role {e[1].r}</p>
+	<p>Username {e[1].u}</p>
+	{e[1].b ? <p>Part of a band</p> : null}
 	<Link to={'users/'+e[0]}>Profile</Link>
 	</li>
 	)})}

@@ -91,8 +91,8 @@ const Band = (props) => {
 	console.log(isInBand);
 	return (
 	<>
-	<p>{profile.name}</p>
-	<ul>{Object.entries(profile.members).map(e => {
+	<p>Name {profile.n}</p>
+	<ul>{Object.entries(profile.m).map(e => {
 	return (
 	<li key={e[0]}>
 	<Link to={'/users/'+e[0]}>{e[1]}</Link>{props.uid === e[0] ? ' This is you' : null}

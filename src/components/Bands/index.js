@@ -15,7 +15,7 @@ const isEmpty = (obj) => {
 
 // split list component in two
 console.log('users component loaded');
-const Bands = (props) => {
+const Bands = () => {
 	const [state, setState] = useState({...INITIAL_STATE});
 	useEffect(() => {		
 		bandsRef().on('value', snapshot => {
@@ -43,8 +43,8 @@ const Bands = (props) => {
 	console.log(e);
 	return (
 	<li key={e[0]}>
-	<p>{e[1].name}</p>
-	<p>Number of members: {Object.keys(e[1].members).length}</p>
+	<p>Name {e[1].n}</p>
+	<p>Number of members: {Object.keys(e[1].m).length}</p>
 	<Link to={'bands/'+e[0]}>Profile</Link>
 	</li>
 	)})}

@@ -48,7 +48,7 @@ const User = (props) => {
 			bandRef(uid).child('members').once('value', snapshot => {
 			if (!snapshot.exists()) bandRef(uid).remove();
 			})
-		})
+		})// add delete chat
 	    .catch(error => {
 			setError(error);
 			console.log(error)
@@ -65,12 +65,21 @@ const User = (props) => {
 	
 	console.log(profile);
 	console.log('render check 1');
+	let chatUid = props.uid < uid ? props.uid+uid : uid+props.uid;
+	let chatUrl = 'chats/'+chatUid;
 	return (
 	<>
-	{props.uid === uid ? <p>This is you</p> : null}
-	<p>{profile.username}</p>
-	<p>{profile.role}</p>
-	{profile.band ? <Link to={'/bands/'+profile.band}>Band</Link> : null}
+	{props.uid === uid ? <p>This is you</p> : 
+	<Link to={{
+		pathname: chatUrl,
+		state: {
+			username: profile.username,
+			role: profile.role,
+		}
+		}}>Start chatting</Link>}
+	<p>Username {profile.u}</p>
+	<p>Role {profile.r}</p>
+	{profile.b ? <Link to={'/bands/'+profile.band}>Band</Link> : null}
 	{props.uid === uid ? <button onClick={() => deleteUser(uid)}>Delete profile</button> : null}
 	{error && <p>{error.message} Try again later.</p>}
 	</>

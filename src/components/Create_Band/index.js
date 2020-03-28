@@ -30,8 +30,8 @@ const Create_Band = (props) => {
 		userRef(props.uid).update({band: bandKey})
 		.then(() => {
 			bandRef(bandKey).set({
-				name,
-				members: update
+				n: name,
+				m: update
 			})
 		})
 		.then(() => {
@@ -57,6 +57,7 @@ const Create_Band = (props) => {
 	onChange={onChange}
 	type='text'
 	placeholer='Band Name'
+	maxLength={16}
 	/>
 
 	<button disabled={!name || loading} type='submit'>Create Band</button>
