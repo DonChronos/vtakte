@@ -36,7 +36,7 @@ const ProtectedRoute = ({ check, children, ...rest}) => {
 	/>
 	);
 };
-// location.state.u 
+// if solution doesn't present itself soon, on auth setstate with json.parse
 
 /// change state from [] to {} <--forgot why I wrote that
 // minimise database
@@ -46,12 +46,14 @@ const App = () => {
 		const unsubscribe = auth.onAuthStateChanged(authUser => {
 		console.log('auth state changed');
 		if (authUser) {
+			console.log(user);
 			setState([authUser.displayName, authUser.uid, authUser.photoURL]);
 		} else {
 		   console.log('user unauth');
 		   setState([null, null, null]);
 		}
 		console.log('useEffect');
+		console.log(state[2]);
 	});
 	return () => unsubscribe();
 	}, []);
@@ -83,10 +85,10 @@ const App = () => {
 			  <Band name={name} uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/chats'>
-			  <Chat name={name} uid={uid} />
+			  <Chats name={name} uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/chats/:uid'>
-			  <Chats name={name} uid={uid} role={role} />
+			  <Chat name={name} uid={uid} role={role} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={!name} path='/signup'>
 			  <SignUp />

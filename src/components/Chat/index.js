@@ -26,7 +26,7 @@ const Chat = props => {
 	const [error, setError] = useState(false);
 	let location = useLocation();
 	let { uid } = useParams();
-	
+	console.log(location);
 	// check if useEffect works correctly
 	console.log('before useEffect');
 	useEffect(() => {

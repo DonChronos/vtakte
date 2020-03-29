@@ -66,7 +66,7 @@ const User = (props) => {
 	console.log(profile);
 	console.log('render check 1');
 	let chatUid = props.uid < uid ? props.uid+uid : uid+props.uid;
-	let chatUrl = 'chats/'+chatUid;
+	let chatUrl = '/chats/'+chatUid;
 	return (
 	<>
 	{props.uid === uid ? <p>This is you</p> : 
@@ -75,7 +75,7 @@ const User = (props) => {
 		state: {
 			u: profile.u,
 			r: profile.r,
-			uid: props.uid,
+			uid: uid,
 		},
 		}}>Start chatting</Link>}
 	<p>Username {profile.u}</p>

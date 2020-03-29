@@ -31,6 +31,9 @@ const header = props => (
 					  <li>
 					    <Link to ="/users">Users</Link>
 					  </li>
+					  <li>
+					    <Link to ="chats/">Chats</Link>
+					  </li>
 					  {props.name ? <SignOut /> : null}
 					</ul>
                 </Header>
