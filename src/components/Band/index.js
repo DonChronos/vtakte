@@ -23,24 +23,24 @@ const Band = (props) => {
 	const [error, setError] = useState(false);
 	console.log('render check state declaration');
 	useEffect(() => {
-		let userObject;
+		let bandObject;
 		bandRef(uid).on('value', snapshot => {
 		console.log('observer fired up');
-		userObject = snapshot.val();
+		bandObject = snapshot.val();
 	});
 	    
 	    userRef(props.uid).once('value', snapshot => {
 			if (snapshot.child('band').exists()) {
 			setState(() => ({
 			  loading: false,
-			  profile: userObject,
+			  profile: bandObject,
 			  isInBand: true,
 		    }))
 			} else {
 			setState(() => ({
 			  loading: false,
-			  profile: userObject,
-			  isInBand: true,
+			  profile: bandObject,
+			  isInBand: false,
 		    }))
 			}
 		})

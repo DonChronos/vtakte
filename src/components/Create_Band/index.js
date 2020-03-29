@@ -23,11 +23,11 @@ const Create_Band = (props) => {
 	const onSubmit = event => {
 		if (loading) return;
 		setLoading(true);
-		let bandKey = userRef(props.uid).child('band').push().key;
+		let bandKey = userRef(props.uid).child('b').push().key;
 		console.log(bandKey);
 		let update = {};
 		update[props.uid] = props.name;
-		userRef(props.uid).update({band: bandKey})
+		userRef(props.uid).update({b: bandKey})
 		.then(() => {
 			bandRef(bandKey).set({
 				n: name,

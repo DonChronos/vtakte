@@ -73,9 +73,10 @@ const User = (props) => {
 	<Link to={{
 		pathname: chatUrl,
 		state: {
-			username: profile.username,
-			role: profile.role,
-		}
+			u: profile.u,
+			r: profile.r,
+			uid: props.uid,
+		},
 		}}>Start chatting</Link>}
 	<p>Username {profile.u}</p>
 	<p>Role {profile.r}</p>

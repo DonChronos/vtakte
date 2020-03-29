@@ -10,15 +10,13 @@ const INITIAL_STATE = {
 		passwordTwo: '',
 	}
 // on loading disable button to prevent multiple calls to database
+// check if after signout it's still possible to sign up another account
 const SignUp = () => {
 	const [user, setUser] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(false);
 	let { username, role, email, passwordOne, passwordTwo } = user;
 	let history = useHistory();
-	console.log(history);
-	console.log(user);
-	console.log(error);
 	const onSubmit = event => {
 		if (loading) return;
 		setLoading(true);
@@ -35,6 +33,7 @@ const SignUp = () => {
 		})
 		.then(() => {
 			setUser({...INITIAL_STATE});
+			setLoading(false);
 			history.push('/');
 		})
 		.catch(error => {

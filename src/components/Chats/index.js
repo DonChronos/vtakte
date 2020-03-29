@@ -27,6 +27,9 @@ const Chats = props => {
 			loading: false,
 			chats: userObject,
 		}))
+	}).catch(error => {
+		setError(error);
+		console.log(error)
 	});
 	return () => {
 		console.log('useEffect return');
@@ -35,20 +38,26 @@ const Chats = props => {
 	}
 	}, []);
 	let { loading, chats } = state;
-
+	if (loading) return <h3>Loading...</h3>;
+	if (isEmpty(chats)) return <p>You don't have any active chats</p>;
 	return (
 	<>
 	<h1>Chats</h1>
 	{loading && <h3>Loading...</h3>}
 	<ul>
-	{isEmpty(chats) ? <p>You don't have any active chats</p> :
-      {Object.entries(chats).map(e => {
-		  console.log(e);
+	{Object.entries(chats).map(e => {
+		let otherUserUid = e[0].replace(props.uid, '');
+		let chatUrl = 'chats/' + e[0];
 	return (
 	<li key={e[0]}>
 	<p>{e[1].r}</p>
 	<p>{e[1].u}</p>
-	<Link to={'chats/'+e[1].chatuid}>Chat</Link>
+	<Link to={{
+		pathname: chatUrl,
+		state: {
+			uid: otherUserUid,
+		},
+		}}>Chat</Link>
 	</li>
 	)
 	})}

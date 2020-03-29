@@ -11,13 +11,15 @@ const User = React.lazy(() => import('../User'));
 const Users = React.lazy(() => import('../Users'));
 const Band = React.lazy(() => import('../Band'));
 const Bands = React.lazy(() => import('../Bands'));
+const Chat = React.lazy(() => import('../Chat'));
+const Chats = React.lazy(() => import('../Chats'));
 const Create_Band = React.lazy(() => import('../Create_Band'));
+
 
 let localObject = JSON.parse(localStorage.getItem(Object.keys(window.localStorage).filter(item => item.startsWith('firebase:authUser'))[0]));
 // get firebase localstorage object
-let user = localObject ? [localObject.displayName, localObject.uid, localObject.photoURL] : 
-[null, null, null];
-
+let user = localObject ? [localObject.displayName, localObject.uid, localObject.photoURL] : [null, null, null];
+console.log('user localobject');
 const ProtectedRoute = ({ check, children, ...rest}) => {
 	return (
 	<Route 
@@ -34,6 +36,7 @@ const ProtectedRoute = ({ check, children, ...rest}) => {
 	/>
 	);
 };
+// location.state.u 
 
 /// change state from [] to {} <--forgot why I wrote that
 // minimise database
@@ -43,7 +46,6 @@ const App = () => {
 		const unsubscribe = auth.onAuthStateChanged(authUser => {
 		console.log('auth state changed');
 		if (authUser) {
-			console.log('user auth');
 			setState([authUser.displayName, authUser.uid, authUser.photoURL]);
 		} else {
 		   console.log('user unauth');
@@ -54,7 +56,8 @@ const App = () => {
 	return () => unsubscribe();
 	}, []);
 	console.log('app');
-	let [name, uid, photo] = state;
+	let [name, uid, role] = state;
+	console.log(name);
   return (
   <BrowserRouter>
     <Header name={name} />
@@ -78,6 +81,12 @@ const App = () => {
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/bands/:uid'>
 			  <Band name={name} uid={uid} />
+			</ProtectedRoute>
+			<ProtectedRoute exact check={name} path='/chats'>
+			  <Chat name={name} uid={uid} />
+			</ProtectedRoute>
+			<ProtectedRoute exact check={name} path='/chats/:uid'>
+			  <Chats name={name} uid={uid} role={role} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={!name} path='/signup'>
 			  <SignUp />

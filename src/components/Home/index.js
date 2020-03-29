@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 // Style the wrapping component, wrap Links in ul li's, style them too.
 
 const Home = props => {
+	console.log(props);
     return props.name ? 
 	<div>
 	  <h1>Welcome, {props.name}</h1>

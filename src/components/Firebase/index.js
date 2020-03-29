@@ -23,4 +23,5 @@ export const bandRef = uid => db.ref(`bands/${uid}`);
 export const bandsRef = () => db.ref('bands');
 export const chatMembersRef = uid => db.ref(`members/${uid}`);
 export const chatRef = uid => db.ref(`chatMessages/${uid}`);
+export const activeChatsRef = () => db.ref('chatsActive');
 console.log('firebase');
