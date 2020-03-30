@@ -18,15 +18,19 @@ const SignUp = () => {
 	let { username, role, email, passwordOne, passwordTwo } = user;
 	let history = useHistory();
 	const onSubmit = event => {
+		let uid;
 		if (loading) return;
 		setLoading(true);
 		doSignUp(email, passwordOne)
 		.then(authUser => {
-			authUser.user.updateProfile({
+			uid = authUser.user.uid;
+			return authUser.user.updateProfile({
 				displayName: username,
 				photoURL: role,
 			});
-			return userRef(authUser.user.uid).set({
+		})
+		.then(() => {
+			return userRef(uid).set({
 				u: username,
 				r: role,
 			});
@@ -35,6 +39,7 @@ const SignUp = () => {
 			setUser({...INITIAL_STATE});
 			setLoading(false);
 			history.push('/');
+			return history.go(0);
 		})
 		.catch(error => {
 			setError(error);

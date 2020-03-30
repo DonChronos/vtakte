@@ -1,8 +1,8 @@
 import React, { Suspense, useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from '../Header';
-import { auth } from '../Firebase';
+import { auth, userRef } from '../Firebase';
 
 const Home = React.lazy(() => import('../Home'));
 const SignUp = React.lazy(() => import('../SignUp'));
@@ -18,7 +18,14 @@ const Create_Band = React.lazy(() => import('../Create_Band'));
 
 let localObject = JSON.parse(localStorage.getItem(Object.keys(window.localStorage).filter(item => item.startsWith('firebase:authUser'))[0]));
 // get firebase localstorage object
-let user = localObject ? [localObject.displayName, localObject.uid, localObject.photoURL] : [null, null, null];
+let user = localObject ? {
+	name: localObject.displayName, 
+	uid: localObject.uid, 
+	role: localObject.photoURL} : {
+			   name: null, 
+			   uid: null, 
+			   role: null
+			   };
 console.log('user localobject');
 const ProtectedRoute = ({ check, children, ...rest}) => {
 	return (
@@ -40,28 +47,35 @@ const ProtectedRoute = ({ check, children, ...rest}) => {
 
 /// change state from [] to {} <--forgot why I wrote that
 // minimise database
+// update profile in useeffect
 const App = () => {
-	let [state, setState] = useState(user);
+	let [state, setState] = useState({...user});
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged(authUser => {
-		console.log('auth state changed');
 		if (authUser) {
-			console.log(user);
-			setState([authUser.displayName, authUser.uid, authUser.photoURL]);
+			setState({
+				name: authUser.displayName, 
+				uid: authUser.uid, 
+				role: authUser.photoURL
+				});
 		} else {
 		   console.log('user unauth');
-		   setState([null, null, null]);
+		   setState({
+			   name: null, 
+			   uid: null, 
+			   role: null
+			   });
 		}
 		console.log('useEffect');
-		console.log(state[2]);
+		console.log(state);
 	});
 	return () => unsubscribe();
 	}, []);
 	console.log('app');
-	let [name, uid, role] = state;
+	let { name, uid, role } = state;
 	console.log(name);
   return (
-  <BrowserRouter>
+  <>
     <Header name={name} />
     <main>
 	    <Suspense fallback={<h3>Loading...</h3>}>
@@ -99,7 +113,7 @@ const App = () => {
 		  </Switch>
 		</Suspense>
 	</main>
-  </BrowserRouter>
+  </>
   );
 };
 export default App;

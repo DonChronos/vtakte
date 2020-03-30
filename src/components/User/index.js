@@ -42,7 +42,7 @@ const User = (props) => {
 	if (isEmpty(profile)) return <p>404: Does not exist</p>;
 	
 	const deleteUser = () => {
-		if (userRef(uid).child('band').exists()) {
+		if (userRef(uid).child('band').once('value', snapshot => snapshot.exists())) {
 		bandRef(uid).child('members/'+props.uid).remove()
 		.then(() => {
 			bandRef(uid).child('members').once('value', snapshot => {
@@ -55,8 +55,7 @@ const User = (props) => {
 		});
 		}
 	    userRef(uid).remove()
-		.then(history.push('/'))
-		.then(auth.delete())
+		.then(auth.currentUser.delete())
 		.catch(error => {
 			setError(error);
 			console.log(error);
