@@ -46,7 +46,7 @@ const Chats = props => {
 	<ul>
 	{Object.entries(chats).map(e => {
 		let otherUserUid = e[0].replace(props.uid, '');
-		let chatUrl = 'chats/' + e[0];
+		let chatUrl = '/chats/' + e[0];
 	return (
 	<li key={e[0]}>
 	<p>{e[1].r}</p>

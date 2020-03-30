@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { chatRef, chatMembersRef, activeChatsRef } from '../Firebase';
 
@@ -21,20 +21,24 @@ const isEmpty = (obj) => {
 		// start observing at chatmessages(uid of the other person)
 		
 		// if user deletes chat, delete it from both ends
+		// change ref to setstate, see if that works better
+		// also implement the delete chat button, probably in the chats plural component
 const Chat = props => {
 	const [state, setState] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(false);
+	const input = useRef(null);
 	let location = useLocation();
 	let { uid } = useParams();
 	console.log(location);
+	console.log(props);
 	// check if useEffect works correctly
 	console.log('before useEffect');
 	useEffect(() => {
 		console.log('useEffect')
-		let chatExists = false;
+		let chatExists = true;
 		let chatObject = {};
 		activeChatsRef(uid).once('value').then(snapshot => {
-			chatExists = snapshot.exists();
+			return chatExists = snapshot.exists();
 		}).then(() => {
 			if (!chatExists) {
 				let update = {};
@@ -50,10 +54,14 @@ const Chat = props => {
 						u: props.name,
 					}
 				}
-				chatMembersRef().update(update)
+				chatMembersRef().update(update);
+				activeChatsRef().set({
+					[uid]: true,
+				})
 			}
 		}).then(() => {
 			chatRef(uid).orderByChild('time').on('value', snapshot => {
+				chatObject = snapshot.val();
 				setState({
 					loading: false,
 					chat: chatObject,
@@ -72,26 +80,28 @@ const Chat = props => {
 	}, []);
 	if (!location.state) return <h1>Illegal action detected</h1>
 	const onSubmit = event => {
+		console.log(input);
 		let date = Date.now();
 		chatRef(uid).push().set({
 			sender: props.name,
-			message: input,
+			message: input.current.value,
 			time: date,
 		}).catch(error => {
 			setError(error);
 			console.log(error);
 		})
+		event.preventDefault();
 	};
 	let { loading, chat } = state;
-	let input = React.createRef();
+	console.log(chat);
+	console.log(input);
 	if (loading) return <h3>Loading...</h3>;
-	if (isEmpty(chat)) return <p>There are no</p>;
 	return (
 	<>
 	<h1>Chat</h1>
 	{loading && <h3>Loading...</h3>}
 	<ul>
-	{Object.entries(chat).map(e => {
+	{isEmpty(chat) ? <p>There are no messages</p> : Object.entries(chat).map(e => {
 		  console.log(e);
 	return (
 	<li key={e[0]}>
@@ -103,8 +113,9 @@ const Chat = props => {
 	})}
 	</ul>
 	<form onSubmit={onSubmit}>
-	<textarea ref={input}></textarea>
-	<button disabled={input} type='submit'>Submit</button> 
+	<textarea defaultValue=''
+	ref={input}></textarea>
+	<button disabled={input.current} type='submit'>Submit</button> 
 	</form>
 	{error && <p>{error.message} Try again later.</p>}
 	</>
