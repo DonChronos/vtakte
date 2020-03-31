@@ -1,9 +1,29 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import styled from 'styled-components';
 
 import Header from '../Header';
+import Footer from '../Footer';
 import { auth, userRef } from '../Firebase';
 
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr auto;
+  gap: 1px 1px;
+  grid-template-areas: "Header Header Header" ". Content ." ". Footer .";
+  min-height: 100vh;
+  main {
+	  grid-area: Content;
+	  border: 1px solid gray;
+	  border-radius: 2px;
+	  text-align: center;
+  };
+  footer {
+	  grid-area: Footer;
+	  margin: auto;
+  }
+`
 const Home = React.lazy(() => import('../Home'));
 const SignUp = React.lazy(() => import('../SignUp'));
 const SignIn = React.lazy(() => import('../SignIn'));
@@ -75,7 +95,7 @@ const App = () => {
 	let { name, uid, role } = state;
 	console.log(name);
   return (
-  <>
+  <Grid>
     <Header name={name} />
     <main>
 	    <Suspense fallback={<h3>Loading...</h3>}>
@@ -113,7 +133,8 @@ const App = () => {
 		  </Switch>
 		</Suspense>
 	</main>
-  </>
+	<Footer />
+  </Grid>
   );
 };
 export default App;

@@ -5,37 +5,67 @@ import styled from 'styled-components';
 import SignOut from '../SignOut';
 
 const Header = styled.header`
+display: grid;
+grid-template-columns: 1fr 5fr 1fr;
+grid-template-rows: 1fr;
+gap: 1px 1px;
+grid-template-areas: "Logo Links SignOut";
+grid-area: Header;
 position: sticky;
 top: 0;
 height: 42px;
 width: 100%;
-display: flex;
+display: grid;
 background-color: #4a76a8;
-justify-content: space-between;
 border-bottom: 1px solid #4872a3;
-align-items: center;
-padding: 0 20px;
 box-sizing: border-box;
 z-index: 90;
 `
 
+const Grid_Logo = styled(Link)`
+grid-area: Logo;
+`
+
+
+const Grid_Ul = styled.ul`
+margin: 0;
+grid-area: Links;
+margin: auto;
+li {
+	display: inline-block;
+	padding-right: 10px;
+}
+`
+
+const Li_Link = styled(Link)`
+display: inline-block;
+background-color: #5b88bd;
+border-radius: 5px;
+color: white;
+text-decoration: none;
+padding: 10px;
+
+`
+
+
+
 const header = props => (
 	            <Header>
-				    <Link to="/">
+				    <Grid_Logo to="/">
 				        <Logo />
-					</Link>
-					<ul>
+					</Grid_Logo>
+					<Grid_Ul>
 					  <li>
-					    <Link to ="/bands">Bands</Link>
+					    <Li_Link to ="/bands">Bands</Li_Link>
 					  </li>
 					  <li>
-					    <Link to ="/users">Users</Link>
+					    <Li_Link to ="/users">Users</Li_Link>
 					  </li>
 					  <li>
-					    <Link to ="chats/">Chats</Link>
+					    <Li_Link to ="/chats">Chats</Li_Link>
 					  </li>
-					  {props.name ? <SignOut /> : null}
-					</ul>
+					</Grid_Ul>
+					{props.name ? <SignOut /> : null}
                 </Header>
 )
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { bandsRef } from '../Firebase';
+import Ul from '../Ul';
 
 const INITIAL_STATE = {
 	loading: true,
@@ -38,7 +39,7 @@ const Bands = () => {
 	<div>
 	<h1>Bands</h1>
 	{loading && <h3>Loading...</h3>}
-	<ul>
+	<Ul>
 	{isEmpty(list) ? <p>There are no bands yet.</p> : Object.entries(list).map(e => {
 	console.log(e);
 	return (
@@ -48,7 +49,7 @@ const Bands = () => {
 	<Link to={'bands/'+e[0]}>Profile</Link>
 	</li>
 	)})}
-	</ul>
+	</Ul>
 	</div>
 	);
 };

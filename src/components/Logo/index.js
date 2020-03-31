@@ -8,15 +8,12 @@ width: 50px;
 img {
 	height: 100%;
 }
-@media (max-width: 500px) {
-	display: none;
-}
 `
 
-const logo = props => (
+const logo = () => (
 <Logo>
 <img src={taktLogo} alt="Takt" />
 </Logo>
-)
+);
 
 export default logo;

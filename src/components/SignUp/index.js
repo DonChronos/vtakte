@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { doSignUp, userRef } from '../Firebase';
+import * as roles from '../Roles';
 
 const INITIAL_STATE = {
 		username: '',
@@ -64,10 +65,10 @@ const SignUp = () => {
 	value={username}
 	onChange={onChange}
 	type='text'
-	placeholer='Username'
+	placeholder='Username'
 	maxLength={16}
 	/>
-	<label>
+	<label style={{display: 'inline-block'}}>
 	<input
 	name='role'
 	value='drummer'
@@ -75,9 +76,9 @@ const SignUp = () => {
 	type='radio'
 	checked={role === 'drummer'}
 	/>
-	Drummer
+	<roles.Drummer />
 	</label>
-	<label>
+	<label style={{display: 'inline-block'}}>
 	<input
 	name='role'
 	value='singer'
@@ -85,9 +86,9 @@ const SignUp = () => {
 	type='radio'
 	checked={role === 'singer'}
 	/>
-	Singer
+	<roles.Singer />
 	</label>
-	<label>
+	<label style={{display: 'inline-block'}}>
 	<input
 	name='role'
 	value='guitar'
@@ -95,9 +96,9 @@ const SignUp = () => {
 	type='radio'
 	checked={role === 'guitar'}
 	/>
-	Guitar
+	<roles.Guitar />
 	</label>
-	<label>
+	<label style={{display: 'inline-block'}}>
 	<input
 	name='role'
 	value='bass'
@@ -105,9 +106,9 @@ const SignUp = () => {
 	type='radio'
 	checked={role === 'bass'}
 	/>
-	Bass guitar
+	<roles.Bass_Guitar />
 	</label>
-	<label>
+	<label style={{display: 'inline-block'}}>
 	<input
 	name='role'
 	value='piano'
@@ -115,7 +116,7 @@ const SignUp = () => {
 	type='radio'
 	checked={role === 'piano'}
 	/>
-	Piano
+	<roles.Piano />
 	</label>
 	<input
 	name='email'
@@ -123,21 +124,21 @@ const SignUp = () => {
 	onChange={onChange}
 	type='email'
 	required
-	placeholer='Email Address'
+	placeholder='Email Address'
 	/>
 	<input
 	name='passwordOne'
 	value={passwordOne}
 	onChange={onChange}
 	type='password'
-	placeholer='Password'
+	placeholder='Password'
 	/>
 	<input
 	name='passwordTwo'
 	value={passwordTwo}
 	onChange={onChange}
 	type='password'
-	placeholer='Confirm Password'
+	placeholder='Confirm Password'
 	/>
 	<button disabled={isInvalid} type='submit'>Sign Up</button>
 	{error && <p>{error.message} Try again later.</p>}

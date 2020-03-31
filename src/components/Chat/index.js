@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { chatRef, chatMembersRef, activeChatsRef } from '../Firebase';
+import Ul from '../Ul';
 
 const INITIAL_STATE = {
 	loading: true,
 	chat: {},
+	isNot1: null,
 }
 
 const isEmpty = (obj) => {
@@ -25,8 +27,8 @@ const isEmpty = (obj) => {
 		// also implement the delete chat button, probably in the chats plural component
 const Chat = props => {
 	const [state, setState] = useState({...INITIAL_STATE});
+	const [message, setMessage] = useState('');
 	const [error, setError] = useState(false);
-	const input = useRef(null);
 	let location = useLocation();
 	let { uid } = useParams();
 	console.log(location);
@@ -37,9 +39,10 @@ const Chat = props => {
 		console.log('useEffect')
 		let chatExists = true;
 		let chatObject = {};
-		activeChatsRef(uid).once('value').then(snapshot => {
-			return chatExists = snapshot.exists();
+		activeChatsRef().child(uid).once('value').then(snapshot => {
+			return chatExists = snapshot.val();
 		}).then(() => {
+			console.log(chatExists);
 			if (!chatExists) {
 				let update = {};
 				update[props.uid] = {
@@ -56,7 +59,7 @@ const Chat = props => {
 				}
 				chatMembersRef().update(update);
 				activeChatsRef().set({
-					[uid]: true,
+					[uid]: 2,
 				})
 			}
 		}).then(() => {
@@ -65,6 +68,7 @@ const Chat = props => {
 				setState({
 					loading: false,
 					chat: chatObject,
+					isNot1: chatExists,
 				})
 			})
 		})
@@ -80,28 +84,32 @@ const Chat = props => {
 	}, []);
 	if (!location.state) return <h1>Illegal action detected</h1>
 	const onSubmit = event => {
-		console.log(input);
 		let date = Date.now();
+		let trueDate = new Date(date).toISOString().slice(-13, -5);
 		chatRef(uid).push().set({
 			sender: props.name,
-			message: input.current.value,
-			time: date,
+			message: message,
+			time: trueDate,
 		}).catch(error => {
 			setError(error);
 			console.log(error);
 		})
 		event.preventDefault();
 	};
-	let { loading, chat } = state;
+	const onChange = event => {
+		let target = event.target;
+		setMessage(target.value);
+	}
+	let { loading, chat, isNot1 } = state;
 	console.log(chat);
-	console.log(input);
 	if (loading) return <h3>Loading...</h3>;
 	return (
 	<>
 	<h1>Chat</h1>
 	{loading && <h3>Loading...</h3>}
-	<ul>
-	{isEmpty(chat) ? <p>There are no messages</p> : Object.entries(chat).map(e => {
+	{isNot1 === 1 ? <p>This person deleted this chat, it's advisable that you do the same</p> : null}
+	<Ul>
+	{isEmpty(chat) ? <p>There are no messages yet</p> : Object.entries(chat).map(e => {
 		  console.log(e);
 	return (
 	<li key={e[0]}>
@@ -111,11 +119,12 @@ const Chat = props => {
 	</li>
 	)
 	})}
-	</ul>
+	</Ul>
 	<form onSubmit={onSubmit}>
-	<textarea defaultValue=''
-	ref={input}></textarea>
-	<button disabled={input.current} type='submit'>Submit</button> 
+	<textarea
+	value={message}
+	onChange={onChange}></textarea>
+	<button disabled={!message} type='submit'>Submit</button> 
 	</form>
 	{error && <p>{error.message} Try again later.</p>}
 	</>

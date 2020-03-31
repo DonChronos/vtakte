@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
-import { auth,  userRef, bandRef } from '../Firebase';
+import { auth,  userRef, bandRef, chatMembersRef } from '../Firebase';
+import Button from '../Button';
+import * as roles from '../Roles';
 
 const INITIAL_STATE = {
 	loading: true,
@@ -40,20 +42,44 @@ const User = (props) => {
 	let { loading, profile } = state;
 	if (loading) return <h3>Loading...</h3>;
 	if (isEmpty(profile)) return <p>404: Does not exist</p>;
-	
+	if (error === 'chat') return <p>You need to delete all your chats before you can delete your profile.</p>;
 	const deleteUser = () => {
-		if (userRef(uid).child('band').once('value', snapshot => snapshot.exists())) {
-		bandRef(uid).child('members/'+props.uid).remove()
+		if (chatMembersRef().child(uid).once('value', snapshot => snapshot.exists())) return setError('chat');
+		if (userRef(uid).child('b').once('value', snapshot => snapshot.exists())) {
+		bandRef(uid).child('m/'+props.uid).remove()
 		.then(() => {
-			bandRef(uid).child('members').once('value', snapshot => {
+			bandRef(uid).child('m').once('value', snapshot => {
 			if (!snapshot.exists()) bandRef(uid).remove();
 			})
-		})// add delete chat
+		})
 	    .catch(error => {
 			setError(error);
 			console.log(error)
 		});
 		}
+		/* add delete chat
+		if (chatMembersRef().child(uid).once('value', snapshot => snapshot.exists())) {
+			let number;
+		activeChatsRef().child(chatUid).once('value', snapshot => {
+			console.log(snapshot.val());
+			return number = snapshot.val();
+		}).then(() => {
+			console.log(number);
+			// would be more efficient with firebase update()
+			if (number === 2) {
+				chatMembersRef().child(props.uid).child(chatUid).remove();
+				activeChatsRef().child(chatUid).set(1);
+			} else if (number === 1) {
+				chatMembersRef().child(props.uid).child(chatUid).remove();
+				chatRef(chatUid).remove();
+				activeChatsRef().child(chatUid).remove();
+			}
+		}).catch(error => {
+			setError(error);
+			console.log(error);
+		})
+		}
+		*/
 	    userRef(uid).remove()
 		.then(auth.currentUser.delete())
 		.catch(error => {
@@ -77,10 +103,12 @@ const User = (props) => {
 			uid: uid,
 		},
 		}}>Start chatting</Link>}
-	<p>Username {profile.u}</p>
-	<p>Role {profile.r}</p>
-	{profile.b ? <Link to={'/bands/'+profile.band}>Band</Link> : null}
-	{props.uid === uid ? <button onClick={() => deleteUser(uid)}>Delete profile</button> : null}
+	{profile.r === 'singer' ? <roles.Singer /> : profile.r === 'drummer' ? <roles.Drummer /> :
+	profile.r === 'bass' ? <roles.Bass_Guitar /> : profile.r === 'guitar' ? <roles.Guitar /> :
+	<roles.Piano />}
+	<p>{profile.u}</p>
+	{profile.b ? <Link to={'/bands/'+profile.b}>Band</Link> : null}
+	{props.uid === uid ? <Button style={{backgroundColor: 'red'}} onClick={() => deleteUser(uid)}>Delete profile</Button> : null}
 	{error && <p>{error.message} Try again later.</p>}
 	</>
 	)

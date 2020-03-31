@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { userRef, bandRef } from '../Firebase';
+import Button from '../Button';
+import Ul from '../Ul';
 
 const INITIAL_STATE = {
 	loading: true,
@@ -24,7 +26,7 @@ const Band = (props) => {
 	console.log('render check state declaration');
 	useEffect(() => {
 		let bandObject;
-		bandRef(uid).on('value', snapshot => {
+		bandRef(uid).once('value', snapshot => {
 		console.log('observer fired up');
 		bandObject = snapshot.val();
 	});
@@ -47,7 +49,6 @@ const Band = (props) => {
 	return () => {
 		console.log('useEffect return');
 		setState(() => ({...INITIAL_STATE}));
-		bandRef(uid).off();
 	}
 	}, []);
 	let { loading, profile, isInBand } = state;
@@ -56,9 +57,12 @@ const Band = (props) => {
 	const joinBand = () => {
 		let update = {};
 		update[props.uid] = props.name;
-		userRef(props.uid).update({band: uid})
+		userRef(props.uid).update({b: uid})
 		.then(() => {
-			bandRef(uid).child('members').update(update)
+			bandRef(uid).child('m').update(update)
+		})
+		.then(() => {
+			history.push('/bands');
 		})
 		.catch(error => {
 			setError(error);
@@ -66,13 +70,13 @@ const Band = (props) => {
 		})
 	}
 	const leaveBand = () => {
-		bandRef(uid).child('members/'+props.uid).remove()
+		bandRef(uid).child('m/'+props.uid).remove()
 		.then(() => {
-			bandRef(uid).child('members').once('value', snapshot => {
+			bandRef(uid).child('m').once('value', snapshot => {
 			if (!snapshot.exists()) bandRef(uid).remove();
 		})
 	    })
-		.then(() => userRef(props.uid).child('band').remove())
+		.then(() => userRef(props.uid).child('b').remove())
 	    .then(() => {
 			history.push('/');
 		})
@@ -85,22 +89,22 @@ const Band = (props) => {
 	console.log('render check 1');
 	console.log('render check 3');
 	let isMember = false;
-	if (profile.members) {
-		isMember = profile.members[props.uid];
+	if (profile.m) {
+		isMember = profile.m[props.uid];
 	}
 	console.log(isInBand);
 	return (
 	<>
-	<p>Name {profile.n}</p>
-	<ul>{Object.entries(profile.m).map(e => {
+	<h3>{profile.n}</h3>
+	<Ul>{Object.entries(profile.m).map(e => {
 	return (
 	<li key={e[0]}>
 	<Link to={'/users/'+e[0]}>{e[1]}</Link>{props.uid === e[0] ? ' This is you' : null}
 	</li>
 	)
 	})}
-	{isMember ? <button onClick={leaveBand}>Leave Band</button> : isInBand ? null : <button onClick={joinBand}>Join Band</button>}
-	</ul>
+	{isMember ? <Button style={{backgroundColor: 'red'}}onClick={leaveBand}>Leave Band</Button> : isInBand ? null : <Button onClick={joinBand}>Join Band</Button>}
+	</Ul>
 	{error && <p>{error.message} Try again later.</p>}
 	</>
 	);

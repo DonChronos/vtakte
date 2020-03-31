@@ -12,7 +12,7 @@ const Create_Band = (props) => {
 	let history = useHistory();
 	useEffect(() => {
 		userRef(props.uid).once('value').then(snapshot => {
-		setPartOf(snapshot.child('band').exists());
+		setPartOf(snapshot.child('b').exists());
 		setLoading(false);
 	  });
 	}, []);
