@@ -31,18 +31,17 @@ const Chat = props => {
 	const [error, setError] = useState(false);
 	let location = useLocation();
 	let { uid } = useParams();
-	console.log(location);
-	console.log(props);
+
 	// check if useEffect works correctly
-	console.log('before useEffect');
+
 	useEffect(() => {
-		console.log('useEffect')
+
 		let chatExists = true;
 		let chatObject = {};
 		activeChatsRef().child(uid).once('value').then(snapshot => {
 			return chatExists = snapshot.val();
 		}).then(() => {
-			console.log(chatExists);
+
 			if (!chatExists) {
 				let update = {};
 				update[props.uid] = {
@@ -74,10 +73,10 @@ const Chat = props => {
 		})
 		.catch(error => {
 			setError(error);
-			console.log(error)
+
 		});
 	return () => {
-		console.log('useEffect return');
+
 		setState(() => ({...INITIAL_STATE}));
 		chatRef(uid).off();
 	}
@@ -92,7 +91,7 @@ const Chat = props => {
 			time: trueDate,
 		}).catch(error => {
 			setError(error);
-			console.log(error);
+
 		})
 		event.preventDefault();
 	};
@@ -101,7 +100,7 @@ const Chat = props => {
 		setMessage(target.value);
 	}
 	let { loading, chat, isNot1 } = state;
-	console.log(chat);
+
 	if (loading) return <h3>Loading...</h3>;
 	return (
 	<>
@@ -110,7 +109,6 @@ const Chat = props => {
 	{isNot1 === 1 ? <p>This person deleted this chat, it's advisable that you do the same</p> : null}
 	<Ul>
 	{isEmpty(chat) ? <p>There are no messages yet</p> : Object.entries(chat).map(e => {
-		  console.log(e);
 	return (
 	<li key={e[0]}>
 	<p>Sent by {e[1].sender}</p>

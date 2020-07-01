@@ -18,16 +18,13 @@ const isEmpty = (obj) => {
 }
 // split profile component in two
 const Band = (props) => {
-	console.log('render check 0');
 	let { uid } = useParams();
 	let history = useHistory();
 	const [state, setState] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(false);
-	console.log('render check state declaration');
 	useEffect(() => {
 		let bandObject;
 		bandRef(uid).once('value', snapshot => {
-		console.log('observer fired up');
 		bandObject = snapshot.val();
 	});
 	    
@@ -47,7 +44,6 @@ const Band = (props) => {
 			}
 		})
 	return () => {
-		console.log('useEffect return');
 		setState(() => ({...INITIAL_STATE}));
 	}
 	}, []);
@@ -66,7 +62,6 @@ const Band = (props) => {
 		})
 		.catch(error => {
 			setError(error);
-			console.log(error);
 		})
 	}
 	const leaveBand = () => {
@@ -82,17 +77,12 @@ const Band = (props) => {
 		})
 		.catch(error => {
 			setError(error);
-			console.log(error);
 		})
 	}
-	console.log(profile);
-	console.log('render check 1');
-	console.log('render check 3');
 	let isMember = false;
 	if (profile.m) {
 		isMember = profile.m[props.uid];
 	}
-	console.log(isInBand);
 	return (
 	<>
 	<h3>{profile.n}</h3>

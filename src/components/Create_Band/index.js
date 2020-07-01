@@ -17,14 +17,12 @@ const Create_Band = (props) => {
 	  });
 	}, []);
 	
-	console.log(partOf);
-	console.log(loading);
+
 	if (loading) return <h3>Loading...</h3>;
 	const onSubmit = event => {
 		if (loading) return;
 		setLoading(true);
 		let bandKey = userRef(props.uid).child('b').push().key;
-		console.log(bandKey);
 		let update = {};
 		update[props.uid] = props.name;
 		userRef(props.uid).update({b: bandKey})
@@ -40,7 +38,7 @@ const Create_Band = (props) => {
 		})
 		.catch(error => {
 			setError(error);
-			console.log(error.message);
+
 		});
 		event.preventDefault();
 	}

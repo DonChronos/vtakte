@@ -46,7 +46,6 @@ let user = localObject ? {
 			   uid: null, 
 			   role: null
 			   };
-console.log('user localobject');
 const ProtectedRoute = ({ check, children, ...rest}) => {
 	return (
 	<Route 
@@ -79,21 +78,16 @@ const App = () => {
 				role: authUser.photoURL
 				});
 		} else {
-		   console.log('user unauth');
 		   setState({
 			   name: null, 
 			   uid: null, 
 			   role: null
 			   });
 		}
-		console.log('useEffect');
-		console.log(state);
 	});
 	return () => unsubscribe();
 	}, []);
-	console.log('app');
 	let { name, uid, role } = state;
-	console.log(name);
   return (
   <Grid>
     <Header name={name} />

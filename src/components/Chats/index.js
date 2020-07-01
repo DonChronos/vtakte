@@ -19,12 +19,8 @@ const isEmpty = (obj) => {
 const Chats = props => {
 	const [state, setState] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(false);
-	console.log('render check state declaration');
 	useEffect(() => {
-		console.log('useEffect start');
 		chatMembersRef().child(props.uid).on('value', snapshot => {
-			console.log(snapshot.val());
-		console.log('observer fired up');
 		const userObject = snapshot.val();
 		setState(() => ({
 			loading: false,
@@ -32,19 +28,15 @@ const Chats = props => {
 		}))
 	})
 	return () => {
-		console.log('useEffect return');
 		setState(() => ({...INITIAL_STATE}));
 		chatMembersRef().child(props.uid).off();
 	}
 	}, []);
 	const deleteChat = chatUid => {
-		console.log(chatUid);
 		let number;
 		activeChatsRef().child(chatUid).once('value', snapshot => {
-			console.log(snapshot.val());
 			return number = snapshot.val();
 		}).then(() => {
-			console.log(number);
 			if (number === 2) {
 				chatMembersRef().child(props.uid).child(chatUid).remove();
 				activeChatsRef().child(chatUid).set(1);
@@ -55,11 +47,9 @@ const Chats = props => {
 			}
 		}).catch(error => {
 			setError(error);
-			console.log(error);
 		})
 	}
 	let { loading, chats } = state;
-	console.log(chats);
 	if (loading) return <h3>Loading...</h3>;
 	if (isEmpty(chats)) return <p>You don't have any active chats</p>;
 	return (

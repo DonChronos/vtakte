@@ -15,14 +15,14 @@ const isEmpty = (obj) => {
 }
 
 // split list component in two
-console.log('users component loaded');
+
 const Bands = () => {
 	const [state, setState] = useState({...INITIAL_STATE});
 	useEffect(() => {		
 		bandsRef().on('value', snapshot => {
 		const bandsObject = snapshot.val();
 		//check for null
-		console.log(bandsObject);
+
 		setState({
 		loading: false,
 		list: bandsObject,
@@ -34,14 +34,13 @@ const Bands = () => {
 	}
 	}, []);
 	let { loading, list } = state;
-	console.log('list return');
+
 	return (
 	<div>
 	<h1>Bands</h1>
 	{loading && <h3>Loading...</h3>}
 	<Ul>
 	{isEmpty(list) ? <p>There are no bands yet.</p> : Object.entries(list).map(e => {
-	console.log(e);
 	return (
 	<li key={e[0]}>
 	<p>Name {e[1].n}</p>

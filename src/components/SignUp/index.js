@@ -44,7 +44,6 @@ const SignUp = () => {
 		})
 		.catch(error => {
 			setError(error);
-			console.log(error.message);
 		});
 		// on success should create user in database and the have history pushed to home
 		event.preventDefault();

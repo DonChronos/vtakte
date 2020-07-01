@@ -9,14 +9,14 @@ const INITIAL_STATE = {
 	list: {},
 }
 // split list component in two
-console.log('users component loaded');
+
 const Users = () => {
 	const [state, setState] = useState({...INITIAL_STATE});
 	useEffect(() => {		
 		usersRef().on('value', snapshot => {
 		const usersObject = snapshot.val();
 		//check for null
-		console.log(usersObject);
+
 		setState({
 		loading: false,
 		list: usersObject,
@@ -28,7 +28,7 @@ const Users = () => {
 	}
 	}, []);
 	let { loading, list } = state;
-	console.log('list return');
+
 	// the ternary expression can be implemented a lot better
 	return (
 	<div>

@@ -21,7 +21,6 @@ const SignIn = () => {
 		})
 		.catch(error => {
 			setError(error);
-			console.log(error.message);
 		});
 		event.preventDefault();
 	}

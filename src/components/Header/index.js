@@ -4,6 +4,7 @@ import Logo from '../Logo';
 import styled from 'styled-components';
 import SignOut from '../SignOut';
 
+// make header more mobile friendly
 const Header = styled.header`
 display: grid;
 grid-template-columns: 1fr 5fr 1fr;

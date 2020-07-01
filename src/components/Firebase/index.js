@@ -24,4 +24,3 @@ export const bandsRef = () => db.ref('bands');
 export const chatMembersRef = () => db.ref('members');
 export const chatRef = uid => db.ref(`chatMessages/${uid}`);
 export const activeChatsRef = () => db.ref('chatsActive');
-console.log('firebase');

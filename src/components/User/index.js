@@ -17,16 +17,12 @@ const isEmpty = (obj) => {
 }
 // split profile component in two
 const User = (props) => {
-	console.log('render check 0');
 	let { uid } = useParams();
 	let history = useHistory();
 	const [state, setState] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(false);
-	console.log('render check state declaration');
 	useEffect(() => {
-		console.log('useEffect start');
 		userRef(uid).on('value', snapshot => {
-		console.log('observer fired up');
 		const userObject = snapshot.val();
 		setState(() => ({
 			loading: false,
@@ -34,7 +30,6 @@ const User = (props) => {
 		}))
 	});
 	return () => {
-		console.log('useEffect return');
 		setState(() => ({...INITIAL_STATE}));
 		userRef(uid).off();
 	}
@@ -54,7 +49,7 @@ const User = (props) => {
 		})
 	    .catch(error => {
 			setError(error);
-			console.log(error)
+
 		});
 		}
 		/* add delete chat
@@ -84,12 +79,11 @@ const User = (props) => {
 		.then(auth.currentUser.delete())
 		.catch(error => {
 			setError(error);
-			console.log(error);
+
 	})
 	}
 	
-	console.log(profile);
-	console.log('render check 1');
+
 	let chatUid = props.uid < uid ? props.uid+uid : uid+props.uid;
 	let chatUrl = '/chats/'+chatUid;
 	return (
