@@ -16,12 +16,12 @@ const isEmpty = (obj) => {
 	return true;
 }
 		// check if chat exists (in chatsactive), if not, add to chatsactive (push().key),
-		// read data from both users(pass props from app, pass props from user Link), 
+		// read data from both users(pass props from app, pass props from user Link),
 		// add to chats, then start observing at chatmessages(uid of the other person).
 		// if chat does exist, check if user is part of chat, then
         // order data by creation time child, fetch once, then
 		// start observing at chatmessages(uid of the other person)
-		
+
 		// if user deletes chat, delete it from both ends
 		// change ref to setstate, see if that works better
 		// also implement the delete chat button, probably in the chats plural component
@@ -56,7 +56,7 @@ const Chat = props => {
 						u: props.name,
 					}
 				}
-				chatMembersRef().update(update);
+				chatMembersRef().set(update);
 				activeChatsRef().set({
 					[uid]: 2,
 				})
@@ -122,7 +122,7 @@ const Chat = props => {
 	<textarea
 	value={message}
 	onChange={onChange}></textarea>
-	<button disabled={!message} type='submit'>Submit</button> 
+	<button disabled={!message} type='submit'>Submit</button>
 	</form>
 	{error && <p>{error.message} Try again later.</p>}
 	</>

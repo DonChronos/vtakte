@@ -23,12 +23,12 @@ box-sizing: border-box;
 z-index: 90;
 `
 
-const Grid_Logo = styled(Link)`
+const GridLogo = styled(Link)`
 grid-area: Logo;
 `
 
 
-const Grid_Ul = styled.ul`
+const GridUl = styled.ul`
 margin: 0;
 grid-area: Links;
 margin: auto;
@@ -38,7 +38,7 @@ li {
 }
 `
 
-const Li_Link = styled(Link)`
+const LiLink = styled(Link)`
 display: inline-block;
 background-color: #5b88bd;
 border-radius: 5px;
@@ -52,20 +52,20 @@ padding: 10px;
 
 const header = props => (
 	            <Header>
-				    <Grid_Logo to="/">
+				    <GridLogo to="/">
 				        <Logo />
-					</Grid_Logo>
-					<Grid_Ul>
+					</GridLogo>
+					<GridUl>
 					  <li>
-					    <Li_Link to ="/bands">Bands</Li_Link>
+					    <LiLink to ="/bands">Bands</LiLink>
 					  </li>
 					  <li>
-					    <Li_Link to ="/users">Users</Li_Link>
+					    <LiLink to ="/users">Users</LiLink>
 					  </li>
 					  <li>
-					    <Li_Link to ="/chats">Chats</Li_Link>
+					    <LiLink to ="/chats">Chats</LiLink>
 					  </li>
-					</Grid_Ul>
+					</GridUl>
 					{props.name ? <SignOut /> : null}
                 </Header>
 )

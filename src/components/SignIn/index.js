@@ -29,7 +29,7 @@ const SignIn = () => {
 		setUser(state => ({...state, [target.name]: target.value}));
 	}
 	const isInvalid = password === '' || email === '';
-	
+
 	return (
 	<form onSubmit={onSubmit}>
 	<input
@@ -37,14 +37,14 @@ const SignIn = () => {
 	value={email}
 	onChange={onChange}
 	type='email'
-	placeholer='Email Address'
+	placeholder='Email Address'
 	/>
 	<input
 	name='password'
 	value={password}
 	onChange={onChange}
 	type='password'
-	placeholer='Password'
+	placeholder='Password'
 	/>
 	<button disabled={isInvalid} type='submit'>Sign In</button>
 	{error && <p>{error.message} Try again later.</p>}

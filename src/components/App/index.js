@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 import Header from '../Header';
 import Footer from '../Footer';
-import { auth, userRef } from '../Firebase';
+import { auth } from '../Firebase';
 
 const Grid = styled.div`
+  background-color: #edeef0;
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto 1fr auto;
@@ -33,24 +34,24 @@ const Band = React.lazy(() => import('../Band'));
 const Bands = React.lazy(() => import('../Bands'));
 const Chat = React.lazy(() => import('../Chat'));
 const Chats = React.lazy(() => import('../Chats'));
-const Create_Band = React.lazy(() => import('../Create_Band'));
+const CreateBand = React.lazy(() => import('../Create_Band'));
 
 
 let localObject = JSON.parse(localStorage.getItem(Object.keys(window.localStorage).filter(item => item.startsWith('firebase:authUser'))[0]));
 // get firebase localstorage object
 let user = localObject ? {
-	name: localObject.displayName, 
-	uid: localObject.uid, 
+	name: localObject.displayName,
+	uid: localObject.uid,
 	role: localObject.photoURL} : {
-			   name: null, 
-			   uid: null, 
+			   name: null,
+			   uid: null,
 			   role: null
 			   };
 const ProtectedRoute = ({ check, children, ...rest}) => {
 	return (
-	<Route 
+	<Route
 	  {...rest}
-	  render={({ location }) => 
+	  render={({ location }) =>
 	    check ? (
 		children
 		) : (
@@ -73,14 +74,14 @@ const App = () => {
 		const unsubscribe = auth.onAuthStateChanged(authUser => {
 		if (authUser) {
 			setState({
-				name: authUser.displayName, 
-				uid: authUser.uid, 
+				name: authUser.displayName,
+				uid: authUser.uid,
 				role: authUser.photoURL
 				});
 		} else {
 		   setState({
-			   name: null, 
-			   uid: null, 
+			   name: null,
+			   uid: null,
 			   role: null
 			   });
 		}
@@ -97,8 +98,8 @@ const App = () => {
 		    <Route exact path='/'>
 			  <Home name={name} />
 			</Route>
-			<ProtectedRoute exact check={name} path='/create_band'>
-			  <Create_Band name={name} uid={uid} />
+			<ProtectedRoute exact check={name} path='/Create_Band'>
+			  <CreateBand name={name} uid={uid} />
 			</ProtectedRoute>
 			<ProtectedRoute exact check={name} path='/users'>
 			  <Users />

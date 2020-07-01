@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { auth,  userRef, bandRef, chatMembersRef } from '../Firebase';
 import Button from '../Button';
 import * as roles from '../Roles';
@@ -18,7 +18,6 @@ const isEmpty = (obj) => {
 // split profile component in two
 const User = (props) => {
 	let { uid } = useParams();
-	let history = useHistory();
 	const [state, setState] = useState({...INITIAL_STATE});
 	const [error, setError] = useState(false);
 	useEffect(() => {
@@ -33,7 +32,7 @@ const User = (props) => {
 		setState(() => ({...INITIAL_STATE}));
 		userRef(uid).off();
 	}
-	}, []);
+}, [uid]);
 	let { loading, profile } = state;
 	if (loading) return <h3>Loading...</h3>;
 	if (isEmpty(profile)) return <p>404: Does not exist</p>;
@@ -82,13 +81,13 @@ const User = (props) => {
 
 	})
 	}
-	
+
 
 	let chatUid = props.uid < uid ? props.uid+uid : uid+props.uid;
 	let chatUrl = '/chats/'+chatUid;
 	return (
 	<>
-	{props.uid === uid ? <p>This is you</p> : 
+	{props.uid === uid ? <p>This is you</p> :
 	<Link to={{
 		pathname: chatUrl,
 		state: {

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { activeChatsRef, chatMembersRef, chatRef } from '../Firebase';
 import Ul from '../Ul';
 import Button from '../Button';
+import * as roles from '../Roles';
 
 const INITIAL_STATE = {
 	loading: true,
@@ -31,7 +32,7 @@ const Chats = props => {
 		setState(() => ({...INITIAL_STATE}));
 		chatMembersRef().child(props.uid).off();
 	}
-	}, []);
+}, [props.uid]);
 	const deleteChat = chatUid => {
 		let number;
 		activeChatsRef().child(chatUid).once('value', snapshot => {
@@ -63,7 +64,9 @@ const Chats = props => {
 		let chatUrl = '/chats/' + e[0];
 	return (
 	<li key={chatUid}>
-	<p>{e[1].r}</p>
+	<p>{e[1].r === 'singer' ? <roles.Singer /> : e[1].r === 'drummer' ? <roles.Drummer /> :
+	e[1].r === 'bass' ? <roles.Bass_Guitar /> : e[1].r === 'guitar' ? <roles.Guitar /> :
+	<roles.Piano />}</p>
 	<p>{e[1].u}</p>
 	<Link to={{
 		pathname: chatUrl,
@@ -74,7 +77,7 @@ const Chats = props => {
 		<br />
 		<Button style={{backgroundColor: 'red'}}onClick={(e) => deleteChat(chatUid, e)}>Delete chat</Button>
 	</li>
-	
+
 	)
 	})}
 	</Ul>
@@ -82,5 +85,5 @@ const Chats = props => {
 	</>
 	)
 }
-
+;
 export default Chats;

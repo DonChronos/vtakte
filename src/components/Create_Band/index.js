@@ -15,8 +15,8 @@ const Create_Band = (props) => {
 		setPartOf(snapshot.child('b').exists());
 		setLoading(false);
 	  });
-	}, []);
-	
+	}, [props.uid]);
+
 
 	if (loading) return <h3>Loading...</h3>;
 	const onSubmit = event => {

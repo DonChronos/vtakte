@@ -2,6 +2,27 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { doSignUp, userRef } from '../Firebase';
 import * as roles from '../Roles';
+import styled from 'styled-components';
+
+const Form = styled.form`
+position: relative;
+`
+const Label = styled.label`
+position: absolute;
+left: 50%;
+transform: translate(-50%, 0);
+`
+const Input = styled.input`
+position: absolute;
+left: 50%;
+transform: translate(-50%, 0);
+`
+const Button = styled.button`
+position: absolute;
+left: 50%;
+transform: translate(-50%, 0);
+top: 390px;
+`
 
 const INITIAL_STATE = {
 		username: '',
@@ -58,8 +79,8 @@ const SignUp = () => {
 	username === '';
 	// add proper validation with regex
 	return (
-	<form onSubmit={onSubmit}>
-	<input
+	<Form onSubmit={onSubmit}>
+	<Input
 	name='username'
 	value={username}
 	onChange={onChange}
@@ -67,7 +88,7 @@ const SignUp = () => {
 	placeholder='Username'
 	maxLength={16}
 	/>
-	<label style={{display: 'inline-block'}}>
+	<Label style={{display: 'inline-block', top: '20px'}}>
 	<input
 	name='role'
 	value='drummer'
@@ -76,8 +97,8 @@ const SignUp = () => {
 	checked={role === 'drummer'}
 	/>
 	<roles.Drummer />
-	</label>
-	<label style={{display: 'inline-block'}}>
+	</Label>
+	<Label style={{display: 'inline-block', top: '80px'}}>
 	<input
 	name='role'
 	value='singer'
@@ -86,8 +107,8 @@ const SignUp = () => {
 	checked={role === 'singer'}
 	/>
 	<roles.Singer />
-	</label>
-	<label style={{display: 'inline-block'}}>
+	</Label>
+	<Label style={{display: 'inline-block', top: '140px'}}>
 	<input
 	name='role'
 	value='guitar'
@@ -96,8 +117,8 @@ const SignUp = () => {
 	checked={role === 'guitar'}
 	/>
 	<roles.Guitar />
-	</label>
-	<label style={{display: 'inline-block'}}>
+	</Label>
+	<Label style={{display: 'inline-block', top: '200px'}}>
 	<input
 	name='role'
 	value='bass'
@@ -106,8 +127,8 @@ const SignUp = () => {
 	checked={role === 'bass'}
 	/>
 	<roles.Bass_Guitar />
-	</label>
-	<label style={{display: 'inline-block'}}>
+	</Label>
+	<Label style={{display: 'inline-block', top: '260px'}}>
 	<input
 	name='role'
 	value='piano'
@@ -116,32 +137,35 @@ const SignUp = () => {
 	checked={role === 'piano'}
 	/>
 	<roles.Piano />
-	</label>
-	<input
+	</Label>
+	<Input
 	name='email'
 	value={email}
 	onChange={onChange}
 	type='email'
 	required
 	placeholder='Email Address'
+	style={{top: '330px'}}
 	/>
-	<input
+	<Input
 	name='passwordOne'
 	value={passwordOne}
 	onChange={onChange}
 	type='password'
 	placeholder='Password'
+	style={{top: '350px'}}
 	/>
-	<input
+	<Input
 	name='passwordTwo'
 	value={passwordTwo}
 	onChange={onChange}
 	type='password'
 	placeholder='Confirm Password'
+	style={{top: '370px'}}
 	/>
-	<button disabled={isInvalid} type='submit'>Sign Up</button>
+	<Button disabled={isInvalid} type='submit'>Sign Up</Button>
 	{error && <p>{error.message} Try again later.</p>}
-	</form>
+	</Form>
 	);
 }
 
